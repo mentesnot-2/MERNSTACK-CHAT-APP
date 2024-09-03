@@ -1,5 +1,6 @@
 import User from "../models/user.model.js"
 import bcryptjs from "bcryptjs"
+import generateToken from "../utils/generateToken.js"
 
 
 export const signupUser = async (req,res) => {
@@ -34,6 +35,7 @@ export const signupUser = async (req,res) => {
             password:hashedPassword,
             profilePic:gender === "male" ? boyProfilePic:girlProfilePic
         })
+        generateToken(newUser._id,res)
         await newUser.save()
         res.status(201).json({message:"User created successfully"})
 
@@ -44,11 +46,30 @@ export const signupUser = async (req,res) => {
     
 }
 
-export const loginUser = (req,res) => {
-    res.send("Hi ther login ")
+export const loginUser = async (req,res) => {
+    try {
+        const {username,password} = req.body
+        const existingUser = await User.findOne({username})
+        if (!existingUser) {
+            res.status(400).json({error:"User does not exist"})
+        }
+        const isPasswordCorrect = await bcryptjs.compare(password,existingUser.password)
+        if (!isPasswordCorrect) {
+            res.status(400).json({error:"Password is incorrect"})
+        }
+        generateToken(existingUser._id,res)
+        res.status(200).json({message:"User logged in successfully"})
+    } catch (error) {
+        res.status(500).json({error:"Internal Server Error"})
+    }
 }
 
 
-export const logOutUser = (req,res) => {
-    res.send("Hi there log out")
+export const logOutUser = async (req,res) => {
+    try {
+        res.cookie("token","",{maxAge:0})
+        res.status(200).json({message:"User logged out successfully"})
+    } catch (error) {
+        res.status(500).json({error:"Internal Server Error"})
+    }
 }
