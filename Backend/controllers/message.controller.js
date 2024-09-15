@@ -34,3 +34,16 @@ export const sendMessage = async (req,res) => {
         return res.status(500).json({error:"Internal Server Error"})
     }
 }
+
+export const getMessage = async (re,res) => {
+    try {
+        const {id:userToChatId} = req.params.id
+        const senderID = req.user._id
+        const conversation = await Conversation.findOne({
+            participants:{$all:[senderID,userToChatId]}
+        }).populate("messages")
+        res.status(200).json(conversation.messages)
+    } catch (error) {
+        return res.status(500).json({error:"internal server error"})
+    }
+}
