@@ -5,27 +5,28 @@ import SideBarLinks from '../SideBarLink';
 import RightSideBar from '../RightSideBar';
 import Conversation from '../Conversation';
 import ChatBox from '../ChatBox'
+import { useGetConversation } from '../../hooks/useGetConversation';
 
 
 let users = [
-  { id: 1, name: 'User 1', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 2, name: 'User 2', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
-  { id: 3, name: 'User 3', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 4, name: 'User 4', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 5, name: 'User 5', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
-  { id: 6, name: 'User 6', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 7, name: 'User 7', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 8, name: 'User 8', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
-  { id: 9, name: 'User 9', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 10, name: 'User 10', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 11, name: 'User 11', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
-  { id: 12, name: 'User 12', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 13, name: 'User 13', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 14, name: 'User 14', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
-  { id: 15, name: 'User 15', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 16, name: 'User 16', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
-  { id: 17, name: 'User 17', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
-  { id: 18, name: 'User 18', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 1, fullName: 'User 1', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 2, fullName: 'User 2', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
+  { _id: 3, fullName: 'User 3', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 4, fullName: 'User 4', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 5, fullName: 'User 5', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
+  { _id: 6, fullName: 'User 6', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 7, fullName: 'User 7', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 8, fullName: 'User 8', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
+  { _id: 9, fullName: 'User 9', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 10, fullName: 'User 10', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 11, fullName: 'User 11', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
+  { _id: 12, fullName: 'User 12', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 13, fullName: 'User 13', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 14, fullName: 'User 14', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
+  { _id: 15, fullName: 'User 15', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 16, fullName: 'User 16', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
+  { _id: 17, fullName: 'User 17', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'female' },
+  { _id: 18, fullName: 'User 18', profilePic: 'https://avatar.iran.liara.run/public/boy', gender: 'male' },
 ];
 
 const chats = {
@@ -96,7 +97,8 @@ const chats = {
 function ChatApp() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const {loading,conversations} = useGetConversation();
+  users = conversations;
   return (
     <>
         <SideBarLinks/>
@@ -117,12 +119,12 @@ function ChatApp() {
             {selectedUser && (
             <div className="p-2 flex items-center border-b bg-gray-200 ml-2 rounded-xl">
                 <img
-                src={users.find((u) => u.id === selectedUser)?.profilePic}
+                src={users.find((u) => u._id === selectedUser)?.profilePic}
                 alt="Selected User Profile"
-                className="w-10 h-10 rounded-full "
+                className="w-10 h-10 rounded-full mr-6"
                 />
                 <span className="font-semibold text-lg text-gray-800">
-                {users.find((u) => u.id === selectedUser)?.name}
+                {users.find((u) => u._id === selectedUser)?.fullName}
                 </span>
             </div>
             )}
