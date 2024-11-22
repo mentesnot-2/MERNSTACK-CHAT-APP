@@ -1,13 +1,22 @@
-import React from 'react';
+import React,{useState} from 'react';
+import { Link } from 'react-router-dom';
+import useLogin  from '../../hooks/useLogin';
 
 function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const {loading,Login} = useLogin();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await Login({ username, password });
+  }
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
           Login to Your Account
         </h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
               Username
@@ -17,6 +26,8 @@ function Login() {
               id="username"
               className="input input-bordered w-full"
               placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
@@ -29,6 +40,8 @@ function Login() {
               id="password"
               className="input input-bordered w-full"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
@@ -38,9 +51,9 @@ function Login() {
               <span className="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
 
-            <a href="#" className="text-sm text-blue-500 hover:underline">
+            <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">
               Forgot Password?
-            </a>
+            </Link>
           </div>
 
           <button
@@ -53,9 +66,9 @@ function Login() {
           <div className="text-center mt-6">
             <p className="text-sm text-gray-600">
               Don't have an account?{' '}
-              <a href="#" className="text-blue-500 hover:underline">
+              <Link to="/signup" className="text-blue-500 hover:underline">
                 Sign up
-              </a>
+              </Link>
             </p>
           </div>
         </form>

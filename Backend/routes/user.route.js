@@ -1,10 +1,10 @@
-import express from "express";
-import protectedRoute from "../middleware/protectRoute";
-import { getUsers } from "../controllers/user.controller";
+const express = require( "express");
+const protectedRoute = require( "../middleware/protectRoute");
+const { getUsers } = require( "../controllers/user.controller");
 
 
 const router = express.Router()
 
 router.get("/",protectedRoute, getUsers)
 
-export default router
+module.exports = router

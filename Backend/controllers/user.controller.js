@@ -1,7 +1,6 @@
-import User from "../models/user.model";
+const User = require("../models/user.model")
 
-
-export const getUsers = async (req,res) => {
+const getUsers = async (req,res) => {
     try {
         const loggedInUser = req.user._id
         const filteredUsers = await User.find({_id:{$ne:loggedInUser}}).select("-password")
@@ -11,3 +10,5 @@ export const getUsers = async (req,res) => {
         return res.status(500).json({error:"Internal server error"})
     }
 };
+
+module.exports = {getUsers}

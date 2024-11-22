@@ -1,18 +1,21 @@
-import express, { json } from 'express';
-import { config } from "dotenv";
-import connectToMongoDb from './db/connectToMongoDb.js';
-import cookieParser from 'cookie-parser';
+const express = require('express');
+const { json } = require('express');
+const {config} = require("dotenv")
+const connectToMongoDb = require("./db/connectToMongoDb")
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const app = express();
 
-import authRoutes from "./routes/auth.route.js"
-import messageRoutes from "./routes/message.route.js"
-import userRoutes from "./routes/user.route.js"
+const authRoutes = require("./routes/auth.route")
+const messageRoutes = require("./routes/message.route")
+const userRoutes = require("./routes/user.route")
 
 config()
 const PORT = process.env.PORT 
 app.use(cookieParser())
 app.use(json());
+app.use(cors())
 
 app.use("/api/auth",authRoutes)
 app.use("/api/message",messageRoutes)

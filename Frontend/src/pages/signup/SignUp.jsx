@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import useSignup from '../../hooks/useSignup';
 
 function SignUp() {
+  const {loading,signup} = useSignup();
   const [formData, setFormData] = useState({
     fullName: '',
     gender: '',
@@ -16,10 +19,9 @@ function SignUp() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic (e.g., validation, API call)
-    console.log(formData);
+    await signup(formData);
   };
 
   return (
@@ -110,15 +112,15 @@ function SignUp() {
             type="submit"
             className="btn btn-primary w-full h-10 mt-3"
           >
-            Sign Up
+            {loading ? <span className='loading loading-spinner'></span>: 'Sign Up'}
           </button>
 
           <div className="text-center mt-6 pb-4">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <a href="#" className="text-blue-500 hover:underline">
+              <Link to="/login" className="text-blue-500 hover:underline">
                 Log in
-              </a>
+              </Link>
             </p>
           </div>
         </form>

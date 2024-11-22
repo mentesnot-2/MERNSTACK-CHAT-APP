@@ -1,9 +1,11 @@
-import Conversation from "../models/conversation.model"
-import Message from "../models/message.model"
+// import Conversation from "../models/conversation.model"
+// import Message from "../models/message.model"
+
+const Conversation = require("../models/conversation.model")
+const Message = require("../models/message.model")
 
 
-
-export const sendMessage = async (req,res) => {
+const sendMessage = async (req,res) => {
     try {
         const {id:receiverID} = req.params
         const senderID = req.user._id
@@ -35,7 +37,7 @@ export const sendMessage = async (req,res) => {
     }
 }
 
-export const getMessage = async (re,res) => {
+const getMessage = async (re,res) => {
     try {
         const {id:userToChatId} = req.params.id
         const senderID = req.user._id
@@ -46,4 +48,9 @@ export const getMessage = async (re,res) => {
     } catch (error) {
         return res.status(500).json({error:"internal server error"})
     }
+}
+
+module.exports = {
+    sendMessage,
+    getMessage
 }
