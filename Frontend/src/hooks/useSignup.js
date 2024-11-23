@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useAuthContext } from "../authContext/authContext";
+import { useAuthContext } from "../context/authContext";
 
 export default function useSignup() {
     const [loading,setLoading] = useState(false);

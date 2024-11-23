@@ -5,7 +5,7 @@ const connectToMongoDb = require("./db/connectToMongoDb")
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
-const app = express();
+const {app,server,io} = require("./socket/socket")
 
 const authRoutes = require("./routes/auth.route")
 const messageRoutes = require("./routes/message.route")
@@ -23,7 +23,7 @@ app.use("/api/auth",authRoutes)
 app.use("/api/message",messageRoutes)
 app.use("/api/users",userRoutes)
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectToMongoDb()
     console.log(`Server is running on port ${PORT}`);
     }
