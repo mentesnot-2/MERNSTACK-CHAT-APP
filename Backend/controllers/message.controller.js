@@ -37,16 +37,19 @@ const sendMessage = async (req,res) => {
     }
 }
 
-const getMessage = async (re,res) => {
+const getMessage = async (req,res) => {
     try {
-        const {id:userToChatId} = req.params.id
+        const {id:userToChatId} = req.params
         const senderID = req.user._id
         const conversation = await Conversation.findOne({
             participants:{$all:[senderID,userToChatId]}
         }).populate("messages")
+        if (!conversation) {
+            return res.status(404).json([])
+        }
         res.status(200).json(conversation.messages)
     } catch (error) {
-        return res.status(500).json({error:"internal server error"})
+        return res.status(500).json({error:error.message})
     }
 }
 
