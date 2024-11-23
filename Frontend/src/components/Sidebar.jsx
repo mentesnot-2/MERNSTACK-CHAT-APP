@@ -1,23 +1,26 @@
 import React,{useState,useEffect} from "react";
 import { useConversation } from "../zustand/useConversation";
+import { useGetConversation } from "../hooks/useGetConversation";
 
-function Sidebar({users = []}) {
-    const [searchQuery, setSearchQuery] = useState('');
+function Sidebar() {
+    let [users,setUsers] = useState([])
     const {selectedConversation, setSelectedConversation} = useConversation();
+    const {conversations} = useGetConversation()
+
+    useEffect(() => {
+        setUsers(conversations)
+    },[conversations])
     const handleUserClick = (user) => {
         setSelectedConversation(user);
     };
     useEffect(() => {
         return () => setSelectedConversation(null);
     }, [setSelectedConversation]);
-    const filteredUsers = users.filter((user) =>
-        user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     
     return (
             <ul className="flex-grow p-4 overflow-y-auto">
-            {filteredUsers.map((user) => (
+            {users.map((user) => (
                 <li
                 key={user._id}
                 className={`flex items-center p-2 cursor-pointer rounded-lg mb-2 text-gray-800 ${
