@@ -9,15 +9,15 @@ function RightSideBar({selectedUser,users = []}) {
                 {selectedUser && (
                     <div className="flex flex-col items-center">
                         <img
-                            src={users.find((u) => u._id === selectedUser)?.profilePic}
+                            src={users.find((u) => u._id === selectedUser._id)?.profilePic}
                             alt="Profile"
                             className="w-20 h-20 rounded-full mb-4"
                         />
                         <h3 className="text-lg font-semibold">
-                            {users.find((u) => u._id === selectedUser)?.name}
+                            {users.find((u) => u._id === selectedUser._id)?.name}
                         </h3>
                         <p className="text-sm text-gray-500">
-                            {users.find((u) => u._id === selectedUser)?.gender}
+                            {users.find((u) => u._id === selectedUser._id)?.gender}
                         </p>
                         <button className="mt-4 btn btn-secondary">Start Video Call</button>
                         <button className="mt-2 btn btn-primary">Start Voice Call</button>

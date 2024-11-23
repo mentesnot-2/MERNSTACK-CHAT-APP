@@ -6,6 +6,7 @@ import RightSideBar from '../RightSideBar';
 import Conversation from '../Conversation';
 import ChatBox from '../ChatBox'
 import { useGetConversation } from '../../hooks/useGetConversation';
+import {useConversation}  from '../../zustand/useConversation';
 
 
 let users = [
@@ -95,7 +96,7 @@ const chats = {
 
 
 function ChatApp() {
-  const [selectedUser, setSelectedUser] = useState(null);
+  const {selectedConversation, setSelectedConversation} = useConversation();
   const [searchQuery, setSearchQuery] = useState('');
   const {loading,conversations} = useGetConversation();
   users = conversations;
@@ -110,28 +111,26 @@ function ChatApp() {
               />
               <Sidebar 
                 users={users} 
-                setSelectedUser={setSelectedUser} 
-                selectedUser={selectedUser}
               />
           </div>
 
           <div className="flex-1 bg-white flex flex-col">
-            {selectedUser && (
+            {selectedConversation && (
             <div className="p-2 flex items-center border-b bg-gray-200 ml-2 rounded-xl">
                 <img
-                src={users.find((u) => u._id === selectedUser)?.profilePic}
+                src={users.find((u) => u._id === selectedConversation._id)?.profilePic}
                 alt="Selected User Profile"
                 className="w-10 h-10 rounded-full mr-6"
                 />
                 <span className="font-semibold text-lg text-gray-800">
-                {users.find((u) => u._id === selectedUser)?.fullName}
+                {users.find((u) => u._id === selectedConversation._id)?.fullName}
                 </span>
             </div>
             )}
 
             <div className="flex-1 p-4 overflow-y-auto">
-            {selectedUser ? (
-                chats[selectedUser]?.map((chat, index) => (
+            {selectedConversation ? (
+                chats[selectedConversation]?.map((chat, index) => (
                   <Conversation chat={chat} index={index}/>
                 ))
             ) : (
@@ -145,12 +144,12 @@ function ChatApp() {
             
             )}
             </div>
-            {selectedUser && (
+            {selectedConversation && (
               <ChatBox/>
             )}
         </div>        
         </div>
-        <RightSideBar selectedUser={selectedUser} users={users}/>
+        <RightSideBar selectedUser={selectedConversation} users={users}/>
 
     </>
   );

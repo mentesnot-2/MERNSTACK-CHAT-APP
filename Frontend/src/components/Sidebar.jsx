@@ -1,11 +1,15 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
+import { useConversation } from "../zustand/useConversation";
 
-function Sidebar({users = [], setSelectedUser, selectedUser}) {
+function Sidebar({users = []}) {
     const [searchQuery, setSearchQuery] = useState('');
-    const handleUserClick = (userId) => {
-        setSelectedUser(userId);
+    const {selectedConversation, setSelectedConversation} = useConversation();
+    const handleUserClick = (user) => {
+        setSelectedConversation(user);
     };
-
+    useEffect(() => {
+        return () => setSelectedConversation(null);
+    }, [setSelectedConversation]);
     const filteredUsers = users.filter((user) =>
         user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -17,9 +21,9 @@ function Sidebar({users = [], setSelectedUser, selectedUser}) {
                 <li
                 key={user._id}
                 className={`flex items-center p-2 cursor-pointer rounded-lg mb-2 text-gray-800 ${
-                    selectedUser === user._id ? 'bg-blue-100' : 'hover:bg-gray-100'
+                    selectedConversation?._id === user._id ? 'bg-blue-100' : 'hover:bg-gray-100'
                 }`}
-                onClick={() => handleUserClick(user._id)}
+                onClick={() => handleUserClick(user)}
                 >
                 <img
                     src={`${user.profilePic}`}

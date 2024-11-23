@@ -7,22 +7,22 @@ const Message = require("../models/message.model")
 
 const sendMessage = async (req,res) => {
     try {
-        const {id:receiverID} = req.params
+        const {id:recieverID} = req.params
         const senderID = req.user._id
         const {message} = req.body
 
         let conversation = await Conversation.findOne({
-            participants:{$all:[senderID,receiverId]}
+            participants:{$all:[senderID,recieverID]}
         })
 
         if (!conversation) {
             conversation = await Conversation.create({
-                participants:[senderID,receiverID]
+                participants:[senderID,recieverID]
             })
         }
         const newMessage =  new Message({
             senderID,
-            receiverID,
+            recieverID,
             message
         })
         if (!newMessage) {
@@ -33,7 +33,7 @@ const sendMessage = async (req,res) => {
         return res.status(200).json(newMessage)
 
     } catch (error) {
-        return res.status(500).json({error:"Internal Server Error"})
+        return res.status(500).json({error:error.message})
     }
 }
 
