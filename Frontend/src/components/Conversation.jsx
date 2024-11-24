@@ -9,6 +9,7 @@ function Conversation({ chat, index }) {
   const { selectedConversation } = useConversation()
   const fromMe = chat.senderID == authUser._id
   const formattedTime = extractTime(chat.updatedAt)
+  const shakeClass = chat.shouldShake?"shake":""
   return (
     <div
       key={index}
@@ -19,7 +20,7 @@ function Conversation({ chat, index }) {
         className={`w-full p-2 rounded-lg max-w-xs ${fromMe ? 'bg-blue-200' : 'bg-gray-200'
           }`}
       >
-        <p className="text-sm text-slate-800">{chat.message}</p>
+        <p className={`text-sm text-slate-800 ${shakeClass}`} >{chat.message}</p>
         <p className="text-xs text-slate-500 mt-1 text-right">
           {formattedTime}
         </p>

@@ -9,6 +9,7 @@ import { useGetConversation } from '../../hooks/useGetConversation';
 import { useConversation } from '../../zustand/useConversation';
 import { useGetMessages } from '../../hooks/useGetMessages';
 import MessageSkeleton from '../skeleton/messageSkeleton';
+import { useListenMessage } from '../../hooks/useListenMessage';
 
 
 
@@ -84,7 +85,7 @@ function ChatApp() {
   const { loading, conversations } = useGetConversation();
   const [users, setUsers] = useState([]);
   const {messages,loading:messageLoading} = useGetMessages();
-  console.log(messages)
+  useListenMessage();
 
   useEffect(() => {
     setUsers(conversations);

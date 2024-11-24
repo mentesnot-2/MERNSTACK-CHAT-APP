@@ -12,21 +12,24 @@ const io = new Server(server,{
         origin: ["http://localhost:3000"],
         methods:["GET","POST"]
     },
-
-
 })
+const getReceiverSocketId = (userId) => {
+    return userSocketMap[userId]
+}
+const userSocketMap = {}
 io.on("connection",(socket) => {
-    console.log("New Connection",socket.id);
-    // socket.on("send-message",(message) => {
-    //     console.log(message);
-    //     io.emit("receive-message",message)
-    // })
-    socket.on("disconnect",() => {
-        console.log("User Disconnected",socket.id);
-    })
+    
+    const userId = socket.handshake.query.userId
+    if (userId) userSocketMap[userId] = socket.id
 
+    io.emit("getOnlineUsers",Object.keys(userSocketMap))
+
+    socket.on("disconnect",()=>{
+        delete userSocketMap[userId]
+        io.emit("getOnlineUsers",Object.keys(userSocketMap))
+    })
 })
 
 
 
-module.exports = {app,io,server}
+module.exports = {app,io,server,getReceiverSocketId}

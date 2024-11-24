@@ -1,11 +1,13 @@
 import React,{useState,useEffect} from "react";
 import { useConversation } from "../zustand/useConversation";
 import { useGetConversation } from "../hooks/useGetConversation";
+import { useSocketContext } from "../context/socketContext";
 
 function Sidebar() {
     let [users,setUsers] = useState([])
     const {selectedConversation, setSelectedConversation} = useConversation();
     const {conversations} = useGetConversation()
+    const {onlineUsers} = useSocketContext()
 
     useEffect(() => {
         setUsers(conversations)
@@ -28,12 +30,17 @@ function Sidebar() {
                 }`}
                 onClick={() => handleUserClick(user)}
                 >
-                <img
-                    src={`${user.profilePic}`}
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full mr-3"
-                />
-                <span className="font-medium">{user.fullName}</span>
+                    <div className="relative">
+                        <img
+                            src={`${user.profilePic}`}
+                            alt="Profile"
+                            className="w-10 h-10 rounded-full mr-3"
+                        />
+                        {onlineUsers.includes(user._id) && (
+                            <span className="absolute top-0 right-2 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                        )}
+                    </div>
+                    <span className="font-medium ml-2">{user.fullName}</span>
                 </li>
             ))}
             </ul>
